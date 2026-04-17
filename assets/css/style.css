@@ -475,7 +475,7 @@ header .nav-a.cta:hover {
 
 /* Card de habilidade com fundo turquesa escuro */
 .skill {
-    background: var(--mar-e);
+    background: color-mix(in srgb, var(--mar-e) 60%, transparent);
     backdrop-filter: blur(6px);
     border: 1px solid var(--borda);
     border-radius: 18px;
