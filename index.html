@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Évora — Arte & Tattoo</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;1,9..144,400&family=Caveat:wght@400;600&family=DM+Sans:wght@300;400&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+  <!-- Cabeçalho -->
+  <header>
+    <nav class="nav">
+      <a href="index.html" class="logo">Évora — Arte & Tattoo</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-a nav-galeria cta">Galeria</a>
+        <a href="pages/sobre.html" class="nav-a nav-sobre">Sobre</a>
+        <a href="pages/encomendar.html" class="nav-a nav-encomendar">Encomendar</a>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <div id="home">
+      <div class="hero">
+        <h1>Arte que nasce<br><em>nos detalhes</em></h1> 
+        <p>Canasvieiras · Florianópolis · SC</p>
+      </div>
+      <!-- filtros do board -->
+      <div class="filters">
+        <button class="filter card select">
+          <div class="icon-box"><img src="assets/img/icone_todos.png" alt=""></div>
+          <span>Tudo</span>
+        </button>
+        <button class="filter card">
+          <div class="icon-box"><img src="assets/img/icone_aquarela.png" alt=""></div>
+          <span>Aquarela</span>
+        </button>
+        <button class="filter card">
+          <div class="icon-box"><img src="assets/img/icone_tattos.png" alt=""></div>
+          <span>Tattoo</span>
+        </button>
+        <button class="filter card">
+          <div class="icon-box"><img src="assets/img/icone_acrilico.png" alt=""></div>
+          <span>Acrílico</span>
+        </button>
+        <button class="filter card">
+          <div class="icon-box"><img src="assets/img/icone_mural.png" alt=""></div>
+          <span>Murais</span>
+        </button>
+      </div>
+      <div class="board-wrap" id="bw">
+        <div class="board" id="board"></div>
+        <div class="hint">↔ arraste para explorar</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Efeito arrastar para explorar  -->
+  <script>
+    const obras = [
+      { t: "Avós e Bebê",     c: "acrilico", y: "2024", img: "assets/img/acrilico-avos-bebe.png",    w: 260, h: 340 },
+      { t: "Barra da Lagoa",  c: "acrilico", y: "2024", img: "assets/img/acrilico-barra-da-lagoa.png", w: 260, h: 340 },
+      { t: "Casal e Cachorro",c: "acrilico", y: "2024", img: "assets/img/acrilico-casal-cachorro.png", w: 260, h: 340 },
+      { t: "Casal",           c: "acrilico", y: "2024", img: "assets/img/acrilico-casal.png",         w: 260, h: 340 },
+      { t: "Araucária",       c: "aquarela", y: "2024", img: "assets/img/aquarela-araucaria.png",     w: 260, h: 340 },
+      { t: "Fada",            c: "aquarela", y: "2024", img: "assets/img/aquarela-fada.png",          w: 260, h: 340 },
+      { t: "Pássaro",         c: "aquarela", y: "2024", img: "assets/img/aquarela-passaro.png",       w: 260, h: 340 },
+      { t: "Cogumelo",        c: "tattoo",   y: "2024", img: "assets/img/tattoo-cogumelo.png",        w: 260, h: 340 },
+      { t: "Fada Tattoo",     c: "tattoo",   y: "2024", img: "assets/img/tattoo-fada.png",            w: 260, h: 340 },
+      { t: "Navio",           c: "tattoo",   y: "2024", img: "assets/img/tattoo-navio.png",           w: 260, h: 340 },
+      { t: "Patinha",         c: "tattoo",   y: "2024", img: "assets/img/tattoo-patinha.png",         w: 260, h: 340 }
+    ];
+
+    let drag = false, moved = false, px = 0, py = 0, sx = 0, sy = 0, vx = 0, vy = 0, lx = 0, ly = 0, raf = null;
+
+    function buildBoard(f) {
+      const board = document.getElementById('board');
+      board.innerHTML = '';
+      const pool = f === 'todos' ? obras : obras.filter(o => o.c === f);
+      const big = [];
+      while (big.length < Math.max(pool.length * 4, 30)) big.push(...pool);
+      for (let r = 0; r < 3; r++) {
+        const row = document.createElement('div');
+        row.className = 'row';
+        const off = r * 4;
+        [...big.slice(off), ...big.slice(0, off)].slice(0, 20).forEach(o => {
+          const d = document.createElement('div');
+          d.className = 'card';
+          d.style.cssText = `width:${o.w}px;height:${o.h}px`;
+          d.innerHTML = `<img src="${o.img}" alt="${o.t}" draggable="false"><span class="badge b-${o.c}">${o.c}</span><div class="card-info"><span class="ct">${o.t}</span><span class="cy">${o.y}</span></div>`;
+          row.appendChild(d);
+        });
+        board.appendChild(row);
+      }
+      px = 0; py = 0;
+      board.style.transform = 'translate(0,0)';
+    }
+
+    function initDrag() {
+      const bw = document.getElementById('bw');
+      const board = document.getElementById('board');
+      bw.addEventListener('mousedown', e => {
+        drag = true; moved = false;
+        sx = e.clientX - px; sy = e.clientY - py;
+        lx = e.clientX; ly = e.clientY;
+        vx = 0; vy = 0;
+        cancelAnimationFrame(raf);
+      });
+      window.addEventListener('mousemove', e => {
+        if (!drag) return;
+        if (Math.abs(e.clientX - lx) > 4 || Math.abs(e.clientY - ly) > 4) moved = true;
+        vx = e.clientX - lx; vy = e.clientY - ly;
+        lx = e.clientX; ly = e.clientY;
+        px = e.clientX - sx; py = e.clientY - sy;
+        board.style.transform = `translate(${px}px,${py}px)`;
+      });
+      window.addEventListener('mouseup', () => {
+        if (!drag) return;
+        drag = false;
+        if (moved) momentum(board);
+        setTimeout(() => { moved = false; }, 60);
+      });
+      bw.addEventListener('touchstart', e => {
+        const t = e.touches[0];
+        drag = true; moved = false;
+        sx = t.clientX - px; sy = t.clientY - py;
+        lx = t.clientX; ly = t.clientY;
+        vx = 0; vy = 0;
+        cancelAnimationFrame(raf);
+      }, { passive: true });
+      bw.addEventListener('touchmove', e => {
+        if (!drag) return;
+        const t = e.touches[0];
+        moved = true;
+        vx = t.clientX - lx; vy = t.clientY - ly;
+        lx = t.clientX; ly = t.clientY;
+        px = t.clientX - sx; py = t.clientY - sy;
+        board.style.transform = `translate(${px}px,${py}px)`;
+      }, { passive: true });
+      bw.addEventListener('touchend', () => {
+        drag = false;
+        if (moved) momentum(board);
+      });
+    }
+
+    function momentum(board) {
+      let mvx = vx * .85, mvy = vy * .85;
+      function step() {
+        if (Math.abs(mvx) < .4 && Math.abs(mvy) < .4) return;
+        px += mvx; py += mvy;
+        mvx *= .94; mvy *= .94;
+        board.style.transform = `translate(${px}px,${py}px)`;
+        raf = requestAnimationFrame(step);
+      }
+      raf = requestAnimationFrame(step);
+    }
+
+    buildBoard('todos');
+    initDrag();
+  </script>
+</body>
+
+</html>

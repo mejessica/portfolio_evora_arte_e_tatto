@@ -1,0 +1,762 @@
+/* =========================================
+   RESET & VARIÁVEIS GLOBAIS
+   Zera margens/padding padrão do browser e
+   define o sistema de cores e tokens do site.
+========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box
+}
+
+:root {
+    --fundo: #1a2421;           /* Verde-escuro quase preto — cor de fundo base */
+    --mar: #3a8f9f;             /* Azul-turquesa — destaque principal (CTAs, badges) */
+    --mar-e: #1d5f6e;           /* Turquesa mais escuro — fundos de cards e hover */
+    --lavanda: #c5a3d8;         /* Lilás — acento tipográfico e itálicos */
+    --branco: #fdf8f2;          /* Off-white quente — texto sobre fundos escuros */
+    --areia: #e9ad81;           /* Laranja-areia — subtítulos e textos secundários */
+    --menta: #b2d4c6;           /* Verde-menta — cor de texto padrão do site */
+    --borda: rgba(100, 80, 60, 0.15) /* Borda sutil translúcida — divisores e contornos */
+}
+
+/* =========================================
+   BASE DO BODY
+   Define a fonte padrão e as cores globais
+   de fundo e texto.
+========================================= */
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--fundo);
+    color: var(--menta)
+}
+
+/* =========================================
+   NAVEGAÇÃO
+   Barra fixa no topo com blur de fundo.
+   justify-content: space-between separa
+   logo (esquerda) dos links (direita).
+========================================= */
+.nav {
+    background: var(--fundo);
+    border-bottom: 1px solid var(--borda);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .75rem 1.5rem;
+    position: sticky;    /* Gruda no topo ao rolar a página */
+    top: 0;
+    z-index: 50;         /* Fica acima de todos os outros elementos */
+    backdrop-filter: blur(10px); /* Efeito fosco quando sobreposta ao conteúdo */
+}
+
+/* Logo tipográfico em itálico serifado */
+header .logo {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    color: var(--menta);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* Wrapper dos links de navegação */
+header .nav-links {
+    display: flex;
+    gap: .25rem
+}
+
+/* Estilo base de cada link da nav */
+header .nav-a {
+    font-size: .78rem;
+    color: var(--branco);
+    padding: .3rem .85rem;
+    border-radius: 999px;  /* Pill — cápsula totalmente arredondada */
+    cursor: pointer;
+    border: none;
+    background: none;
+    transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+    text-decoration: none;
+}
+
+/* Hover suave: fundo escuro e cor menta */
+header .nav-a:hover {
+    background: var(--fundo);
+    color: var(--menta)
+}
+
+/* Estado ativo da página atual */
+header .nav-a.on {
+    background: var(--mar-e);
+    color: var(--branco)
+}
+
+/* Botão de call-to-action — página selecionada na nav */
+header .nav-a.cta {
+    background: var(--mar);
+    color: var(--branco)
+}
+
+header .nav-a.cta:hover {
+    background: var(--mar-e)
+}
+
+/* =========================================
+   HERO — PÁGINA INICIAL
+   Bloco de abertura centralizado com o
+   título principal e localização.
+========================================= */
+.hero {
+    padding: 2.5rem 1.5rem 1rem;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column
+}
+
+/* Título grande com fonte serifada leve */
+.hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(3rem, 6vw, 4rem); /* Responsivo: mínimo 3rem, máximo 4rem */
+    font-weight: 300;
+    line-height: 1.05
+}
+
+/* Parte em itálico com cor lilás */
+.hero h1 em {
+    font-style: italic;
+    color: var(--lavanda)
+}
+
+/* Subtítulo com fonte cursiva — localização */
+.hero p {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: var(--menta);
+    margin-top: .4rem;
+    opacity: 0.7;
+}
+
+/* =========================================
+   FILTROS DA GALERIA
+   Linha de botões com ícone + label para
+   filtrar as obras por categoria.
+========================================= */
+.filters {
+    display: flex;
+    margin-top: 2rem;
+    gap: .35rem;
+    flex-wrap: wrap;       /* Quebra linha em telas pequenas */
+    padding: 0 1.5rem 1.25rem;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: row;
+}
+
+/* Cada botão de filtro: ícone em cima, texto embaixo */
+.filter.card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    gap: 6px;
+    cursor: pointer;
+}
+
+/* Quadrado com borda que envolve o ícone */
+.icon-box {
+    border: 2px solid var(--borda);
+    border-radius: 14px;
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .2s;
+}
+
+/* Ícone ocupa 70% da caixa */
+.icon-box img {
+    width: 70%;
+    height: auto;
+}
+
+/* Label abaixo do ícone */
+.filter.card span {
+    font-size: .7rem;
+    color: var(--menta);
+}
+
+/* Hover e estado ativo (.select) compartilham o mesmo visual:
+   borda menta e leve deslocamento para baixo */
+.filter.card:hover .icon-box,
+.filter.card.select .icon-box {
+    border-color: var(--menta);
+    transform: translateY(2px);
+}
+
+/* =========================================
+   BOARD — GALERIA ARRASTÁVEL
+   Área de scroll livre com drag. O .board
+   interno se move via transform: translate()
+   controlado por JS.
+========================================= */
+.board-wrap {
+    height: calc(150vh - 14rem); /* Altura generosa para expor bastante conteúdo */
+    overflow: hidden;
+    cursor: grab;
+    border-top: 1px solid var(--borda);
+    background: var(--fundo);
+    position: relative        /* Ancora o .board posicionado absolutamente */
+}
+
+/* Cursor muda para "agarrando" durante o drag */
+.board-wrap:active {
+    cursor: grabbing
+}
+
+/* Container interno das linhas de cards — movido pelo JS */
+.board {
+    position: absolute;
+    padding: 1rem;
+    user-select: none;        /* Impede seleção de texto durante o drag */
+    will-change: transform    /* Dica ao browser para otimizar a animação */
+}
+
+/* Dica visual "arraste para explorar" */
+.hint {
+    position: absolute;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .8rem;
+    color: var(--mar);
+    pointer-events: none;     /* Não interfere nos eventos de clique/drag */
+    margin: 0 20px;
+    background-color: var(--menta);
+    padding: 10px;
+}
+
+/* Linha horizontal de cards dentro do board */
+.row {
+    display: flex;
+    gap: .8rem;
+    margin-bottom: .8rem
+}
+
+/* =========================================
+   CARDS DE OBRA
+   Cada card é uma imagem com badge de
+   categoria e overlay com título ao hover.
+========================================= */
+.card {
+    flex-shrink: 0;            /* Não comprime — mantém o tamanho definido via JS */
+    border-radius: 10px;
+    overflow: hidden;          /* Garante que imagem respeite o border-radius */
+    cursor: pointer;
+    position: relative;        /* Ancora o badge e o card-info */
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .07)
+}
+
+/* Leve zoom e sombra ao passar o mouse */
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, .12);
+    z-index: 10               /* Sobe sobre os cards vizinhos */
+}
+
+/* Imagem preenche o card inteiro */
+.card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover
+}
+
+/* Overlay com gradiente escuro na base do card.
+   Invisível por padrão, aparece no hover. */
+.card-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.2rem .8rem .6rem;
+    background: linear-gradient(transparent, rgba(30, 20, 15, .75));
+    opacity: 0;
+    transition: opacity .2s
+}
+
+.card:hover .card-info {
+    opacity: 1
+}
+
+/* Título da obra — itálico serifado */
+.card-info .ct {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: .85rem;
+    color: #fff;
+    display: block
+}
+
+/* Ano da obra — discreto */
+.card-info .cy {
+    font-size: .62rem;
+    opacity: .7;
+    color: #fff;
+    display: block;
+    margin-top: .05rem
+}
+
+/* Badge de categoria no canto superior esquerdo */
+.badge {
+    position: absolute;
+    top: .5rem;
+    left: .5rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .72rem;
+    padding: .12rem .5rem;
+    border-radius: 999px;
+    color: #fff;
+    backdrop-filter: blur(6px)  /* Efeito fosco sobre a imagem */
+}
+
+/* Cores específicas por categoria */
+.b-aquarela { background: rgba(58, 143, 159, .8) }
+.b-tattoo   { background: rgba(50, 40, 35, .8) }
+.b-acrilico { background: rgba(140, 100, 190, .8) }
+.b-mural    { background: rgba(70, 140, 90, .8) }
+
+/* =========================================
+   SOBRE — HERO
+   Grid de duas colunas: foto à esquerda,
+   texto à direita. Em mobile vira coluna única.
+========================================= */
+.sobre-hero {
+    width: 100%;
+    max-width: 1320px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 520px 1fr;  /* Foto fixa, texto flexível */
+    align-items: center;
+    gap: 3rem;
+    min-height: calc(100vh - 90px);    /* Ocupa quase a tela toda */
+    padding: 2rem 2rem 3rem;
+}
+
+/* Coluna da foto — alinha a imagem na base */
+.sobre-foto {
+    padding: 2rem 2rem 0 2rem;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+/* Foto com topo arredondado, simulando retrato em moldura */
+.sobre-foto img {
+    width: 100%;
+    max-height: 800px;
+    object-fit: cover;
+    border-radius: 260px 260px 0 0;  /* Oval no topo, reto na base */
+    display: block;
+    opacity: .96;
+}
+
+/* Coluna de texto da página Sobre */
+.sobre-info {
+    padding: clamp(2rem, 5vw, 5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Rótulo discreto acima do título — "Artista Visual & Tatuadora" */
+.eyebrow {
+    font-size: .68rem;
+    letter-spacing: .22em;      /* Espaçamento amplo para estilo editorial */
+    text-transform: uppercase;
+    color: var(--areia);
+    margin-bottom: 1rem;
+}
+
+/* Título principal da página Sobre */
+.sobre-info h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(3rem, 8vw, 5.8rem);
+    line-height: .92;            /* Comprimido para display tipográfico */
+    font-weight: 300;
+    margin: 0 0 .8rem;
+    color: var(--menta);
+}
+
+.sobre-info h1 em {
+    font-style: italic;
+    color: var(--lavanda);
+}
+
+/* Localização em fonte cursiva */
+.cidade {
+    font-family: 'Caveat', cursive;
+    font-size: 1.15rem;
+    color: var(--menta);
+    margin-bottom: 1.4rem;
+    opacity: 0.8;
+}
+
+/* Texto de bio */
+.bio {
+    max-width: 58ch;           /* ~58 caracteres por linha — boa legibilidade */
+    font-size: .95rem;
+    line-height: 1.9;
+    color: var(--areia);
+    margin-bottom: 2rem;
+}
+
+.bio strong {
+    color: var(--areia);
+}
+
+/* Grade de 3 métricas: anos, especialidades, histórias */
+.infos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--borda);
+    max-width: 540px;
+}
+
+/* Número grande em lilás */
+.info-n {
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-size: 2rem;
+    color: var(--lavanda);
+    margin-bottom: .2rem;
+}
+
+/* Label da métrica em caixa alta pequena */
+.info-l {
+    font-size: .62rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--menta);
+}
+
+/* =========================================
+   SKILLS — SEÇÃO "O QUE ÉVORA FAZ"
+   Grid de cards com especialidades da artista.
+========================================= */
+.skills-sec {
+    padding: clamp(2.5rem, 5vw, 5rem) 1.5rem;
+}
+
+/* Título centralizado da seção */
+.sec-title {
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    margin-bottom: 2.5rem;
+}
+
+/* Grid de 3 colunas */
+.skills {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+/* Card de habilidade com fundo turquesa escuro */
+.skill {
+    background: var(--mar-e);
+    backdrop-filter: blur(6px);
+    border: 1px solid var(--borda);
+    border-radius: 18px;
+    padding: 1.4rem;
+    transition: .25s ease;
+}
+
+/* Eleva o card ao hover */
+.skill:hover {
+    transform: translateY(-4px);
+    border-color: var(--mar);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, .06);
+}
+
+.skill h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    font-weight: 300;
+    margin-bottom: .55rem;
+}
+
+.skill p {
+    font-size: .86rem;
+    line-height: 1.75;
+    color: var(--menta);
+}
+
+/* =========================================
+   ENCOMENDAR — SEÇÃO DE CONTATO
+   Grid de duas colunas: info/links à esquerda,
+   formulário à direita.
+========================================= */
+.contato-sec {
+    padding: clamp(2rem, 5vw, 5rem) 1.5rem;
+    max-width: 1250px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 520px;  /* Formulário tem largura fixa */
+    gap: 2rem;
+    align-items: start;               /* Alinha no topo, não estica */
+}
+
+/* Título grande da seção */
+.contato-sec h2 {
+    color: var(--areia);
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.8rem, 7vw, 5.2rem);
+    line-height: .95;
+    font-weight: 300;
+    margin-bottom: 1rem;
+}
+
+.contato-sec h2 em {
+    color: var(--lavanda);
+    font-style: italic;
+}
+
+/* Parágrafo descritivo dentro da coluna esquerda */
+.contato-sec > div > p {
+    max-width: 46ch;
+    font-size: .95rem;
+    line-height: 1.9;
+    color: var(--menta);
+    margin-bottom: 1.5rem;
+}
+
+/* Lista de informações de contato */
+.links {
+    display: grid;
+    gap: .8rem;
+}
+
+/* Cada item de contato (ateliê, instagram, telefone) */
+.link-item {
+    display: flex;
+    align-items: center;
+    gap: .9rem;
+    padding: 1rem;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--mar-e) 60%, transparent); /* Semi-transparente */
+    border: 1px solid var(--borda);
+    transition: .2s ease;
+}
+
+/* Desliza levemente para direita no hover */
+.link-item:hover {
+    transform: translateX(4px);
+    border-color: var(--mar);
+}
+
+/* Label da categoria do contato */
+.link-info small {
+    display: block;
+    font-size: .6rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--menta);
+    margin-bottom: .2rem;
+}
+
+/* Valor do contato */
+.link-info span {
+    font-size: .88rem;
+    color: var(--areia);
+}
+
+/* =========================================
+   FORMULÁRIO DE ORÇAMENTO
+========================================= */
+
+/* Container do form com fundo e sombra */
+.form-box {
+    background: color-mix(in srgb, var(--mar-e) 60%, transparent);
+    border: 1px solid var(--borda);
+    border-radius: 22px;
+    padding: 1.6rem;
+    box-shadow: 0 18px 35px rgba(0, 0, 0, .05);
+}
+
+.form-box h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.35rem;
+    font-style: italic;
+    font-weight: 300;
+    margin-bottom: 1.2rem;
+}
+
+/* Wrapper de cada campo: label + input */
+.input-form {
+    margin-bottom: .95rem;
+}
+
+/* Label do campo */
+.input-form label {
+    display: block;
+    font-size: .62rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--menta);
+    margin-bottom: .4rem;
+}
+
+/* Estilo base dos campos — fundo branco, texto turquesa */
+.input-form input,
+.input-form select,
+.input-form textarea {
+    width: 100%;
+    border: 1px solid var(--borda);
+    background: #fff;
+    border-radius: 12px;
+    padding: .82rem .95rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .88rem;
+    color: var(--mar-e);
+    outline: none;
+    transition: .2s ease;
+}
+
+/* Destaque de foco com borda e glow lilás */
+.input-form input:focus,
+.input-form select:focus,
+.input-form textarea:focus {
+    border-color: var(--lavanda);
+    box-shadow: 0 0 0 4px var(--lavanda);
+}
+
+/* Textarea redimensionável apenas verticalmente */
+.input-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Botão de envio — pill full-width */
+.submit {
+    width: 100%;
+    border: none;
+    border-radius: 999px;
+    padding: .95rem 1rem;
+    cursor: pointer;
+    background: var(--mar-e);
+    color: var(--branco);
+    font-size: .85rem;
+    font-family: 'DM Sans', sans-serif;
+    transition: .2s ease;
+}
+
+/* Sobe levemente e muda para lilás no hover */
+.submit:hover {
+    transform: translateY(-2px);
+    background: var(--lavanda);
+}
+
+/* =========================================
+   RODAPÉ
+========================================= */
+footer {
+    background: var(--fundo);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+footer p {
+    font-size: .68rem;
+    color: rgba(253, 248, 242, .5)  /* Branco com 50% de opacidade */
+}
+
+/* Logo tipográfico no rodapé */
+footer .flogo {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: .95rem;
+    color: var(--menta)
+}
+
+/* =========================================
+   RESPONSIVO — TABLET (até 980px)
+   Grid de duas colunas vira uma coluna.
+========================================= */
+@media (max-width: 980px) {
+
+    /* Foto e texto empilham verticalmente */
+    .sobre-hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .sobre-foto {
+        padding: 2rem 1.5rem 0;
+    }
+
+    /* Foto menor em telas menores */
+    .sobre-foto img {
+        max-width: 320px;
+        max-height: 420px;
+    }
+
+    /* Skills em 2 colunas */
+    .skills {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Form de contato desce abaixo das infos */
+    .contato-sec {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================
+   RESPONSIVO — MOBILE (até 640px)
+========================================= */
+@media (max-width: 640px) {
+
+    .sobre-info {
+        padding: 2rem 1.2rem;
+    }
+
+    /* Métricas em coluna única */
+    .infos {
+        grid-template-columns: 1fr;
+        gap: .8rem;
+    }
+
+    /* Skills em coluna única */
+    .skills {
+        grid-template-columns: 1fr;
+    }
+
+    .skills-sec,
+    .contato-sec {
+        padding: 2rem 1rem;
+    }
+
+    .form-box {
+        padding: 1.2rem;
+    }
+
+    /* Título menor no mobile */
+    .contato-sec h2 {
+        font-size: 2.6rem;
+    }
+}
