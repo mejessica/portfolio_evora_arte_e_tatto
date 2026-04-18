@@ -299,7 +299,7 @@ header .nav-a.cta:hover {
     font-family: 'Fraunces', serif;
     font-style: italic;
     font-size: .85rem;
-    color: #fff;
+    color: var(--branco);
     display: block
 }
 
@@ -307,7 +307,7 @@ header .nav-a.cta:hover {
 .card-info .cy {
     font-size: .62rem;
     opacity: .7;
-    color: #fff;
+    color: var(--branco);
     display: block;
     margin-top: .05rem
 }
@@ -321,7 +321,7 @@ header .nav-a.cta:hover {
     font-size: .72rem;
     padding: .12rem .5rem;
     border-radius: 999px;
-    color: #fff;
+    color: var(--branco);
     backdrop-filter: blur(6px)  /* Efeito fosco sobre a imagem */
 }
 
@@ -500,7 +500,7 @@ header .nav-a.cta:hover {
 
 .skill p {
     font-size: .86rem;
-    line-height: 1.75;
+    line-height: 1.75; 
     color: var(--menta);
 }
 
@@ -625,7 +625,7 @@ header .nav-a.cta:hover {
 .input-form textarea {
     width: 100%;
     border: 1px solid var(--borda);
-    background: #fff;
+    background: var(--branco);
     border-radius: 12px;
     padding: .82rem .95rem;
     font-family: 'DM Sans', sans-serif;
